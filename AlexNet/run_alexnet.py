@@ -11,8 +11,10 @@ class AlexNet(nn.Module):
                            #     padding: zero-padding on both sides;          
                            #     input: 3x224x224;    output: 64x55x55 <== (224+2+2-11)/4 + 1
                            ('conv0', nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
+                           # nn.ReLu();
                            #     input: 64x55x55;    output: 64x55x55
                            ('relu0', nn.ReLU()),
+                           # nn.MaxPool2d();
                            #     input: 64x55x55;    output: 64x27x27 <== (55-3)/2 + 1
                            ('maxpool0', nn.MaxPool2d(kernel_size=3, stride=2)), 
                             
