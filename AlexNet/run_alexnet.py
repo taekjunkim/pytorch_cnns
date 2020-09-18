@@ -97,9 +97,8 @@ dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle
 
 ##### training part
 # Construct a loss function and an Optimizer. 
-def loss_fun(y_pred,y_act):
-    loss = 0;
-    return loss;
+loss_fun = torch.nn.MSELoss(reduction='sum');
+optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9);
 
 AlexNet.train();
 for epoch in range(100):
