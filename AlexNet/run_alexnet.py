@@ -1,7 +1,7 @@
+## model part
 import torch
 import torch.nn
 
-## model part
 class AlexNet(nn.Module):
     def __init__(self):
         super().__init__();
@@ -69,5 +69,30 @@ class AlexNet(nn.Module):
         return x;        
     
 ## load data
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
 
-## load data
+# Comment 0: define transformation that you wish to apply on image
+data_transforms = transforms.Compose(
+    #Converts a PIL Image or numpy.ndarray (H x W x C) in the range [0, 255] 
+    #to a torch.FloatTensor of shape (C x H x W) in the range [0.0, 1.0] 
+    #if the PIL Image belongs to one of the modes (L, LA, P, I, F, RGB, YCbCr, RGBA, CMYK, 1)
+    # or if the numpy.ndarray has dtype = np.uint8
+    [transforms.ToTensor(),
+     #normalization of pre-trained networks:
+     #from docs:
+     #All pre-trained models expect input images normalized in the same way, 
+     #i.e. mini-batches of 3-channel RGB images of shape (3 x H x W), where
+     #H and W are expected to be at least 224. The images have to be loaded 
+     #in to a range of [0, 1] and then normalized using 
+     #mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225]. 
+     transforms.Normalize([0.485, 0.456, 0.406], 
+                          [0.229, 0.224, 0.225])])#
+
+# Comment 1 : Load the datasets with ImageFolder
+image_datasets = datasets.ImageFolder(root= stim_path, transform=data_transforms)
+# Comment 2: Using the image datasets and the transforms, define the dataloaders
+dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle=False, num_workers=2);
+
+
+## training part
