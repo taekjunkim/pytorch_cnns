@@ -92,7 +92,7 @@ data_transforms = transforms.Compose(
 # Comment 1 : Load the datasets with ImageFolder
 image_datasets = datasets.ImageFolder(root= stim_path, transform=data_transforms)
 # Comment 2: Using the image datasets and the transforms, define the dataloaders
-dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle=False, num_workers=2);
+dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle=True, num_workers=2);
 
 
 ##### training part
@@ -103,11 +103,14 @@ def loss_fun(y_pred,y_act):
 
 AlexNet.train();
 for epoch in range(100):
-    y_pred = AlexNet(input);
-    loss = loss_fun(y_pred,y_act);
-    
-    # Zero gradients before a backward pass, perform a backward pass, and update the weights.
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()    
+    for i, (images,labels) in enumerate(dataloaders):    
+        input = images;
+        y_act = labels;
+        y_pred = AlexNet(input);
+        loss = loss_fun(y_pred,y_act);
+
+        # Zero gradients before a backward pass, perform a backward pass, and update the weights.
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()    
     
