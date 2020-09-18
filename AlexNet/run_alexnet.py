@@ -96,3 +96,18 @@ dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle
 
 
 ##### training part
+# Construct a loss function and an Optimizer. 
+def loss_fun(y_pred,y_act):
+    loss = 0;
+    return loss;
+
+AlexNet.train();
+for epoch in range(100):
+    y_pred = AlexNet(input);
+    loss = loss_fun(y_pred,y_act);
+    
+    # Zero gradients before a backward pass, perform a backward pass, and update the weights.
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()    
+    
