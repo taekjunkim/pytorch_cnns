@@ -1,4 +1,4 @@
-## model part
+##### model part
 import torch
 import torch.nn
 
@@ -68,7 +68,7 @@ class AlexNet(nn.Module):
         x = self.classifier(x);
         return x;        
     
-## load data
+##### data loading part
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
@@ -95,4 +95,4 @@ image_datasets = datasets.ImageFolder(root= stim_path, transform=data_transforms
 dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle=False, num_workers=2);
 
 
-## training part
+##### training part
