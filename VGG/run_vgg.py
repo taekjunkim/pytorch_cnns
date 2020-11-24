@@ -9,41 +9,72 @@ class VGG(nn.Module):
         self.feature = nn.Sequential(
                            # nn.Conv2d(input_size,output_size,kernel_size,stride,padding);
                            #     padding: zero-padding on both sides;          
-                           #     input: 3x224x224;    output: 64x55x55 <== (224+2+2-11)/4 + 1
-                           nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
+                           #     input: 3x224x224;    output: 64x224x224 <== (224+1+1-3)/1 + 1
+                           nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1),
                            # nn.ReLu();
-                           #     input: 64x55x55;    output: 64x55x55
+                           #     input: 64x224x224;    output: 64x224x224
+                           nn.ReLU(),
+                           # nn.Conv2d(input_size,output_size,kernel_size,stride,padding);
+                           #     padding: zero-padding on both sides;          
+                           #     input: 64x224x224;    output: 64x224x224 <== (224+1+1-3)/1 + 1
+                           nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
+                           # nn.ReLu();
+                           #     input: 64x224x224;    output: 64x224x224
                            nn.ReLU(),
                            # nn.MaxPool2d();
-                           #     input: 64x55x55;    output: 64x27x27 <== (55-3)/2 + 1
-                           nn.MaxPool2d(kernel_size=3, stride=2), 
-                           #     input: 64x27x27;    output: 192x27x27 <== (27+2+2-5)/1 + 1
-                           nn.Conv2d(64, 192, kernel_size=5, padding=2),
+                           #     input: 64x224x224;    output: 64x112x112 <== (224-2)/2 + 1
+                           nn.MaxPool2d(kernel_size=2, stride=2), 
+                           #     input: 64x112x112;    output: 128x112x112 <== (112+1+1-3)/1 + 1
+                           nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1),
                            nn.ReLU(),
-                           #     input: 192x27x27;    output: 192x13x13 <== (27-3)/2 + 1
-                           nn.MaxPool2d(kernel_size=3, stride=2), 
-                           #     input: 192x13x13;    output: 384x13x13 <== (13+1+1-3)/1 + 1
-                           nn.Conv2d(192, 384, kernel_size=3, padding=1),
+                           #     input: 128x112x112;    output: 128x112x112 <== (112+1+1-3)/1 + 1
+                           nn.Conv2d(128, 128, kernel_size=3, stride=1, padding=1),
                            nn.ReLU(),
-                           #     input: 384x13x13;    output: 256x13x13 <== (13+1+1-3)/1 + 1
-                           nn.Conv2d(384, 256, kernel_size=3, padding=1),
+                           #     input: 128x112x112;    output: 128x56x56 <== (112-2)/2 + 1
+                           nn.MaxPool2d(kernel_size=2, stride=2), 
+                           #     input: 128x56x56;    output: 256x56x56 <== (56+1+1-3)/1 + 1
+                           nn.Conv2d(128, 256, kernel_size=3, stride=1, padding=1),
                            nn.ReLU(),
-                           #     input: 256x13x13;    output: 256x13x13 <== (13+1+1-3)/1 + 1
-                           nn.Conv2d(384, 256, kernel_size=3, padding=1),
+                           #     input: 256x56x56;    output: 256x56x56 <== (56+1+1-3)/1 + 1
+                           nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
                            nn.ReLU(),
-                           #     input: 256x13x13;    output: 256x6x6 <== (13-3)/2 + 1
-                           nn.MaxPool2d(kernel_size=3, stride=2) 
+                           #     input: 256x56x56;    output: 256x56x56 <== (56+1+1-3)/1 + 1
+                           nn.Conv2d(256, 256, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 256x56x56;    output: 256x28x28 <== (56-2)/2 + 1
+                           nn.MaxPool2d(kernel_size=2, stride=2), 
+                           #     input: 256x28x28;    output: 512x28x28 <== (28+1+1-3)/1 + 1
+                           nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x28x28;    output: 512x28x28 <== (28+1+1-3)/1 + 1
+                           nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x28x28;    output: 512x28x28 <== (28+1+1-3)/1 + 1
+                           nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x28x28;    output: 512x14x14 <== (28-2)/2 + 1
+                           nn.MaxPool2d(kernel_size=2, stride=2), 
+                           #     input: 512x14x14;    output: 512x14x14 <== (14+1+1-3)/1 + 1
+                           nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x14x14;    output: 512x14x14 <== (14+1+1-3)/1 + 1
+                           nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x14x14;    output: 512x14x14 <== (14+1+1-3)/1 + 1
+                           nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1),
+                           nn.ReLU(),
+                           #     input: 512x14x14;    output: 512x7x7 <== (14-2)/2 + 1
+                           nn.MaxPool2d(kernel_size=2, stride=2), 
                            );
-        self.avgpool = nn.AdaptiveAvgPool2d((6, 6)); ### I think it may not be needed, if the input size is already 256x6x6                        
         ### classifier
         self.classifier = nn.Sequantial(
-                              nn.Dropout(),
-                              nn.Linear(256 * 6 * 6, 4096),
+                              nn.Linear(512 * 7 * 7, 4096),
                               nn.ReLU(inplace=True),
                               nn.Dropout(),
                               nn.Linear(4096, 4096),
                               nn.ReLU(inplace=True),
-                              nn.Linear(4096, num_classes)                              
+                              nn.Dropout(),
+                              nn.Linear(4096, 1000)                              
                               );  
         ### initialize weights
         self._initialize_weights();
@@ -63,7 +94,6 @@ class VGG(nn.Module):
 
     def forward(self,x):
         x = self.features(x);
-        x = self.avgpool(x);
         x = torch.flatten(x, 1);
         x = self.classifier(x);
         return x;        
