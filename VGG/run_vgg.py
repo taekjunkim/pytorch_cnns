@@ -130,7 +130,7 @@ dataloaders = torch.utils.data.DataLoader(image_datasets, batch_size=10, shuffle
 loss_fun = torch.nn.MSELoss(reduction='sum');
 optimizer = torch.optim.SGD(model.parameters(), lr=1e-4, momentum=0.9);
 
-AlexNet.train();
+VGG.train();
 for epoch in range(100):
     for i, (images,labels) in enumerate(dataloaders):    
         input = images;
