@@ -2,7 +2,7 @@ I implemented a SegNet based on VGG16 which does semantic pixel-wise segmentatio
 The SegNet consists of five layers of encoders and five layers of decoders.
 Parameters in encoders were freezed during the training, so that their weights were the same as those in VGG16. 
 
-SegNet was trained on VOC2012 dataset 
+SegNet was trained on VOC2012 dataset - semantic segmentation
 - training set: 2914 images
 - test set: 210 images
 
